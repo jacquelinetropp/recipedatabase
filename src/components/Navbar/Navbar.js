@@ -1,15 +1,15 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Nav from "../../assets/nav.jpg";
-// import {SvgImage} from '../styles';
-// import Main from "../../assets/main.svg";
+import { connect } from "react-redux";
 import { ReactComponent as Soup } from "../../assets/soup.svg";
 import { ReactComponent as Main } from "../../assets/main.svg";
 import { ReactComponent as Appetizer } from "../../assets/bread.svg";
 import { ReactComponent as Salad } from "../../assets/salad.svg";
 import { ReactComponent as Dessert } from "../../assets/cake.svg";
 import { ReactComponent as Beverage } from "../../assets/beverage.svg";
+import {signOut} from '../../store/user/userActions';
 
 const Wrapper = styled.div``;
 
@@ -45,13 +45,35 @@ const StyledLink = styled(Link)`
   fill: white;
 `;
 
-const Navbar = () => {
+const HeaderLink = styled(Link)`
+  font-size: 2rem;
+  color: var(--color-main);
+`;
+
+const Button = styled.div`
+  font-size: 2rem;
+  color: var(--color-main);
+`;
+
+const Navbar = ({ authenticated, logout }) => {
+  let links;
+
+  if (authenticated) {
+    links = <Button onClick={() => logout()}>Logout</Button>;
+  } else {
+    links = (
+      <Fragment>
+        <HeaderLink to="/signin">Sign In</HeaderLink>
+        <HeaderLink to="/signup">Sign Up</HeaderLink>
+      </Fragment>
+    );
+  }
   return (
     <Wrapper>
       <TopNav>
         <div>Icon + name</div>
         <div>Search Bar</div>
-        <div>User profile</div>
+        {links}
       </TopNav>
       <BottomNav>
         <StyledLink to="/main">
@@ -83,4 +105,12 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+const mapStateToProps = ({ firebase }) => ({
+  authenticated: firebase.auth.uid,
+});
+
+const mapDispatchToProps = {
+  logout: signOut
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
