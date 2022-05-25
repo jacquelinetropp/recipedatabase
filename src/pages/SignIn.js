@@ -16,12 +16,12 @@ const StyledForm = styled(Form)`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 2rem;
+  padding-bottom: 2rem;
 `;
 
 const Main = styled.div`
   width: 70%;
   margin: 15rem auto 0 auto;
-  height: 80vh;
   text-align: center;
 `;
 
@@ -92,6 +92,7 @@ const SignIn = ({ loading, error, login, history }) => {
     </Formik>
   );
 };
+
 const mapStateToProps = ({ user }) => ({
   loading: user.loading,
   error: user.error,

@@ -8,6 +8,7 @@ import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import AddRecipe from "./pages/AddRecipe";
 import RecipePage from "./pages/RecipePage";
+import CategoryPage from "./pages/CategoryPage";
 
 function App({ authenticated }) {
   let routes;
@@ -17,7 +18,13 @@ function App({ authenticated }) {
       <Fragment>
         <Route exact path="/" component={Home} />
         <Route exact path="/addrecipe" component={AddRecipe} />
-        <Route path="/:recipeid" component={RecipePage} />
+        <Route path="/recipe/:recipeid" component={RecipePage} />
+        <Route exact path="/main" component={CategoryPage} />
+        <Route exact path="/soup" component={CategoryPage} />
+        <Route exact path="/appetizer" component={CategoryPage} />
+        <Route exact path="/salad" component={CategoryPage} />
+        <Route exact path="/dessert" component={CategoryPage} />
+        <Route exact path="/beverage" component={CategoryPage} />
       </Fragment>
     );
   } else {
@@ -27,7 +34,13 @@ function App({ authenticated }) {
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/signin" component={SignIn} />
         <Route exact path="/addrecipe" component={AddRecipe} />
-        <Route path="/:recipeid" component={RecipePage} />
+        <Route path="/recipe/:recipeid" component={RecipePage} />
+        <Route exact path="/main" component={CategoryPage} />
+        <Route exact path="/soup" component={CategoryPage} />
+        <Route exact path="/appetizer" component={CategoryPage} />
+        <Route exact path="/salad" component={CategoryPage} />
+        <Route exact path="/dessert" component={CategoryPage} />
+        <Route exact path="/beverage" component={CategoryPage} />
       </Fragment>
     );
   }

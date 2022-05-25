@@ -8,15 +8,16 @@ export const InnerWrapper = styled.div`
   margin: 0 auto;
   margin-top: -5rem;
   z-index: 3;
-  position: absolute;
+  /* position: absolute;
   left: 50%;
-  transform: translate(-50%);
+  transform: translate(-50%); */
 `;
 export const Main = styled.div`
   width: 97%;
   float: right;
   box-shadow: 0 0 3rem rgba(0, 0, 0, 0.2);
   padding: 1rem 5rem;
+  margin-bottom: 5rem;
 `;
 
 export const ImageWrapper = styled.div`

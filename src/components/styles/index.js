@@ -17,7 +17,6 @@ export const StyledForm = styled(Form)`
 
 export const FormWrapper = styled.div`
   width: 50%;
-  margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,7 +24,7 @@ export const FormWrapper = styled.div`
   border: 5px solid var(--color-second);
   padding: 5rem;
   border-radius: 15px;
-  margin-top: 3rem;
+  margin: 3rem auto;
 
   @media only screen and (max-width: 425px) {
     width: 75%;

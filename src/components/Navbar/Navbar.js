@@ -10,6 +10,7 @@ import { ReactComponent as Salad } from "../../assets/salad.svg";
 import { ReactComponent as Dessert } from "../../assets/cake.svg";
 import { ReactComponent as Beverage } from "../../assets/beverage.svg";
 import {signOut} from '../../store/user/userActions';
+import Logo from '../../assets/logo.png';
 
 const Wrapper = styled.div``;
 
@@ -53,7 +54,12 @@ const HeaderLink = styled(Link)`
 const Button = styled.div`
   font-size: 2rem;
   color: var(--color-main);
+  cursor: pointer;
 `;
+
+const Image = styled.img`
+  height: 60px;
+`
 
 const Navbar = ({ authenticated, logout }) => {
   let links;
@@ -64,14 +70,13 @@ const Navbar = ({ authenticated, logout }) => {
     links = (
       <Fragment>
         <HeaderLink to="/signin">Sign In</HeaderLink>
-        <HeaderLink to="/signup">Sign Up</HeaderLink>
       </Fragment>
     );
   }
   return (
     <Wrapper>
       <TopNav>
-        <div>Icon + name</div>
+        <a href="/"><Image src={Logo} alt="logo"/></a>
         <div>Search Bar</div>
         {links}
       </TopNav>

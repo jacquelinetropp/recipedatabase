@@ -68,6 +68,42 @@ export const getRecipes =
     }
   };
 
+  export const getRecipeCategory =
+  (category) =>
+  async (dispatch, getState, { getFirestore }) => {
+    const firestore = getFirestore();
+    const userId = getState().firebase.auth.uid;
+
+    dispatch({ type: actions.ONE_CATEGORY_START });
+    try {
+      const recipeList = await firestore
+        .collection("recipes").where("category", "==", category);
+      recipeList.onSnapshot((snapshot) => {
+        let recipes = [];
+        snapshot.docs.forEach((doc) => {
+          recipes.push({
+            id: doc.id,
+            title: doc.data().title,
+            author: doc.data().author,
+            amount: doc.data().amount,
+            size: doc.data().size,
+            ingredients: doc.data().ingredients,
+            userId: doc.data().userId,
+            instructions: doc.data().instructions,
+            temperature: doc.data().temperature,
+            degrees: doc.data().degrees,
+            image: doc.data().image,
+          });
+        });
+        dispatch({ type: actions.ONE_CATEGORY_SUCCESS, payload: recipes });
+      });
+    } catch (e) {
+      dispatch({ type: actions.ONE_CATEGORY_FAIL, payload: e });
+      console.log(e);
+    }
+  };
+
+
 export const getOneRecipe =
   (id) =>
   async (dispatch, getState, { getFirestore }) => {

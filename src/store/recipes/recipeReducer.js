@@ -8,7 +8,8 @@ const initialState = {
     loading: false,
     error: null
   },
-  currentRecipe: []
+  currentRecipe: [],
+  categoryRecipe: []
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -68,6 +69,33 @@ export default (state = initialState, { type, payload }) => {
           }
         }
       case actions.ONE_RECIPE_FAIL:
+        return {
+          ...state,
+          getRecipe: {
+            ...state.getRecipe,
+            loading: false,
+            error: payload
+          }
+        }
+        case actions.ONE_CATEGORY_START:
+      return {
+        ...state,
+        getRecipe: {
+          ...state.getRecipe,
+          loading: true
+        }
+      }
+      case actions.ONE_CATEGORY_SUCCESS:
+        return {
+          ...state,
+          categoryRecipe: payload,
+          getRecipe: {
+            ...state.getRecipe,
+            loading: false,
+            error: false
+          }
+        }
+      case actions.ONE_CATEGORY_FAIL:
         return {
           ...state,
           getRecipe: {

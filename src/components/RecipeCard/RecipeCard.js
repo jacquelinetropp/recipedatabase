@@ -21,9 +21,8 @@ const Name = styled.div`
 
 
 const RecipeCard = ({recipe}) => {
-    console.log(recipe);
     return (
-        <Wrapper to={`/${recipe.id}`}>
+        <Wrapper to={`/recipe/${recipe.id}`}>
             <Image src={recipe.image} alt="recipe image" />
             <Name>{recipe.title}</Name>            
         </Wrapper>
