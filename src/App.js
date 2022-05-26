@@ -9,6 +9,7 @@ import SignIn from "./pages/SignIn";
 import AddRecipe from "./pages/AddRecipe";
 import RecipePage from "./pages/RecipePage";
 import CategoryPage from "./pages/CategoryPage";
+import EditProfile from "./pages/EditProfile";
 
 function App({ authenticated }) {
   let routes;
@@ -25,6 +26,7 @@ function App({ authenticated }) {
         <Route exact path="/salad" component={CategoryPage} />
         <Route exact path="/dessert" component={CategoryPage} />
         <Route exact path="/beverage" component={CategoryPage} />
+        <Route exact path ="/editprofile" component={EditProfile} />
       </Fragment>
     );
   } else {
