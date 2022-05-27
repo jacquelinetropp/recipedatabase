@@ -81,6 +81,32 @@ export const signIn =
     dispatch({ type: actions.AUTH_END });
   };
 
+  export const editProfile = (data) => async (dispatch, getState, {getFirebase, getFirestore}) => {
+    const firebase = getFirebase();
+    const firestore = getFirestore();
+    const user = firebase.auth().currentUser;
+    const { uid: userId, email: userEmail } = getState().firebase.auth;
+
+    dispatch({type: actions.PROFILE_START});
+    try {
+      if (data.email !== userEmail) {
+        await user.updateEmail(data.email);
+      }
+      await firestore.collection("users").doc(userId).set({
+        name: data.name,  
+        measurements: data.measurements
+      });
+  
+      if (data.password.length > 0) {
+        await user.updatePassword(data.password);
+      }
+      dispatch({ type: actions.PROFILE_SUCCESS });
+    } catch (err) {
+  
+      dispatch({ type: actions.PROFILE_FAIL, payload: err.message });
+    }
+
+  }
 
   export const setMeasurements = measurements => ((dispatch) => {
     dispatch({type: actions.SET_MEASUREMENTS, payload: measurements});

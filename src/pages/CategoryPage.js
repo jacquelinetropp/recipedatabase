@@ -5,7 +5,8 @@ import LinkButton from "../components/Button/LinkButton";
 import {
   Wrapper,
   ButtonWrapper,
-  RecipeWrapper, NoRecipeText
+  RecipeWrapper,
+  NoRecipeText,
 } from "../components/styles/MainPages";
 import RecipeCard from "../components/RecipeCard/RecipeCard";
 

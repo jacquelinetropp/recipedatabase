@@ -10,7 +10,7 @@ import Message from "../components/styles/Message";
 import Button from "../components/Button/Button";
 import { MessageWrapper, StyledForm, FormWrapper } from "../components/styles";
 
-import { signUp } from "../store/user/userActions";
+import { signUp, editProfile } from "../store/user/userActions";
 
 const TextWrapper = styled.div`
   margin-bottom: 2rem;
@@ -39,8 +39,9 @@ const Schema = Yup.object().shape({
     .required("You need to confirm your password."),
 });
 
-const EditPage = ({ signUp, loading, error, firebase }) => {
-    console.log(firebase.profile.name);
+const EditPage = ({ signUp, loading, error, firebase, editProfile }) => {
+  console.log(firebase.profile.name);
+  if (!firebase.profile.isLoaded) return null;
   return (
     <Formik
       initialValues={{
@@ -48,11 +49,17 @@ const EditPage = ({ signUp, loading, error, firebase }) => {
         email: firebase.auth.email ? firebase.auth.email : "",
         password: "",
         confirmPassword: "",
-        measurements: firebase.profile.measurements ? firebase.profile.measurements :"us",
+        measurements: firebase.profile.measurements
+          ? firebase.profile.measurements
+          : "us",
       }}
       validationSchema={Schema}
       onSubmit={async (values) => {
-        await signUp(values);
+        if (firebase.profile) {
+          await editProfile(values);
+        } else {
+          await signUp(values);
+        }
       }}
     >
       {({ isSubmitting, isValid }) => (
@@ -98,13 +105,18 @@ const EditPage = ({ signUp, loading, error, firebase }) => {
               loading={loading ? "Signing Up" : null}
               type="submit"
             >
-              Sign up
+              {firebase.profile ? "Edit Profile" : "Sign Up"}
             </Button>
             <MessageWrapper>
               <Message error show={error}>
                 {error}
               </Message>
             </MessageWrapper>
+            <MessageWrapper>
+            <Message success show={error === false}>
+              Profile was updated!
+            </Message>
+          </MessageWrapper>
           </StyledForm>
         </FormWrapper>
       )}
@@ -114,12 +126,13 @@ const EditPage = ({ signUp, loading, error, firebase }) => {
 
 const mapStateToProps = ({ user, firebase }) => ({
   loading: user.loading,
-  error: user.error,
-  firebase
+  error: user.profile.error,
+  firebase,
 });
 
 const mapDispatchToProps = {
   signUp: signUp,
+  editProfile,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditPage);

@@ -16,6 +16,10 @@ export const PROFILE_START = "PROFILE_START";
 export const PROFILE_SUCCESS = "PROFILE_SUCCESS";
 export const PROFILE_FAIL = "PROFILE_FAIL";
 
+export const UPDATE_START = "UPDATE_START";
+export const UPDATE_SUCCESS = "UPDATE_SUCCESS";
+export const UPDATE_FAIL = "UPDATE_FAIL";
+
 export const DELETE_START = "DELETE_START";
 export const DELETE_FAIL = "DELETE_FAIL";
 

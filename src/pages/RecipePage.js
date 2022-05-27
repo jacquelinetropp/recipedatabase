@@ -1,8 +1,9 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { getOneRecipe } from "../store/recipes/recipeActions";
 import { useParams } from "react-router-dom";
 import { convertTemperatures } from "../utils/Conversions";
+import Food from "../assets/food.jpg";
 
 import {
   Wrapper,
@@ -52,11 +53,20 @@ const RecipePage = ({ recipe, getOneRecipe, loading, measurements }) => {
 
   const temperature = () => convertTemperatures(measurements, recipe);
 
+  const [imgSrc, setImgSrc] = useState(" ");
+  useEffect(() => {
+    if (recipe.image) {
+      setImgSrc(recipe.image);
+    }
+  }, [recipe.image]);
+  const handleError = () => setImgSrc(Food);
+  console.log(imgSrc);
+
   return (
     <Wrapper>
       <ImageWrapper>
         <Image>
-          <img src={recipe.image} alt="recipe" />
+          <img src={imgSrc} onError={handleError} alt="recipe"/>
         </Image>
       </ImageWrapper>
 
