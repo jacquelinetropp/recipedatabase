@@ -40,7 +40,6 @@ const Schema = Yup.object().shape({
 });
 
 const EditPage = ({ signUp, loading, error, firebase, editProfile }) => {
-  console.log(firebase.profile.name);
   if (!firebase.profile.isLoaded) return null;
   return (
     <Formik

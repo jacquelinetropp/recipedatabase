@@ -11,7 +11,7 @@ const Ingredient = styled.div`
 `;
 
 const IngredientInput = ({ index, userSetting, auth }) => {
-  console.log(userSetting);
+
   let content;
   if (!userSetting) {
     content = <Fragment>loading...</Fragment>;

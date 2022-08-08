@@ -11,12 +11,14 @@ import { ReactComponent as Dessert } from "../../assets/cake.svg";
 import { ReactComponent as Beverage } from "../../assets/beverage.svg";
 import {signOut} from '../../store/user/userActions';
 import Logo from '../../assets/logo.png';
+import SearchBar from "../searchBar/SearchBar";
 
 const Wrapper = styled.div``;
 
 const TopNav = styled.div`
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
   padding: 1rem;
 `;
 
@@ -77,7 +79,7 @@ const Navbar = ({ authenticated, logout }) => {
     <Wrapper>
       <TopNav>
         <a href="/"><Image src={Logo} alt="logo"/></a>
-        <div>Search Bar</div>
+        <SearchBar />
         {links}
       </TopNav>
       <BottomNav>

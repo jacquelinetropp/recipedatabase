@@ -4,6 +4,7 @@ import { getOneRecipe } from "../store/recipes/recipeActions";
 import { useParams } from "react-router-dom";
 import { convertTemperatures } from "../utils/Conversions";
 import Food from "../assets/food.jpg";
+import RecipePageWire from "../components/wireframes/RecipePageWire";
 
 import {
   Wrapper,
@@ -60,9 +61,9 @@ const RecipePage = ({ recipe, getOneRecipe, loading, measurements }) => {
     }
   }, [recipe.image]);
   const handleError = () => setImgSrc(Food);
-  console.log(imgSrc);
 
   return (
+    !loading || !recipe ? (
     <Wrapper>
       <ImageWrapper>
         <Image>
@@ -95,7 +96,9 @@ const RecipePage = ({ recipe, getOneRecipe, loading, measurements }) => {
         </Main>
       </InnerWrapper>
     </Wrapper>
-  );
+  ) : (
+    <RecipePageWire />
+  ))
 };
 
 const mapStateToProps = ({ recipe, firebase }) => ({
