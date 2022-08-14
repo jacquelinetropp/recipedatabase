@@ -56,6 +56,7 @@ const Category = styled.div`
   margin: 1rem 0 2rem 0;
   gap: 12px;
 `;
+
 const RecipeForm = ({ createRecipe, loading, userSettings }) => {
   const [number, setNumber] = useState(1);
   const [step, setStep] = useState(1);
@@ -87,7 +88,7 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
     }
   };
 
-  const handleUpload = async () => {
+  const handleUpload = async (values) => {
     const storage = firebase.storage();
     const uploadTask = storage.ref(`images/${image.name}`).put(image);
     uploadTask.on(
@@ -104,7 +105,9 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
           .then((url) => {
             setImageUrl(url);
             console.log(url);
-          });
+          }).then(() => {
+            createRecipe(values, imageUrl)
+          })
       }
     );
   };
@@ -126,10 +129,8 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
         category: "main",
       }}
       validationSchema={RecipeSchema}
-      onSubmit={ (values) => {
-        handleUpload().then(() => {
-          createRecipe(values, imageUrl)
-        })
+      onSubmit={async (values) => {
+        await handleUpload(values)
       }}
     >
       {({ isSubmitting, isValid }) => (
