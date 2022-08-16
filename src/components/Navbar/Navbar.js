@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Nav from "../../assets/nav.jpg";
@@ -11,7 +11,6 @@ import { ReactComponent as Dessert } from "../../assets/cake.svg";
 import { ReactComponent as Beverage } from "../../assets/beverage.svg";
 import {signOut} from '../../store/user/userActions';
 import Logo from '../../assets/logo.png';
-import SearchBar from "../searchBar/SearchBar";
 
 const Wrapper = styled.div``;
 
@@ -23,7 +22,8 @@ const TopNav = styled.div`
 `;
 
 const BottomNav = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
   justify-content: space-evenly;
   background-image: linear-gradient(
       to bottom,
@@ -35,7 +35,20 @@ const BottomNav = styled.div`
   background-size: cover;
   height: 20rem;
   align-items: center;
-`;
+
+  @media only screen and (max-width: 768px){
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media only screen and (max-width: 425px){
+    display: ${({showMenu}) => showMenu ? "grid" : "none"};
+    height: 100%;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 2rem;
+    padding: 2rem;
+  }
+
+  `;
 
 const StyledLink = styled(Link)`
   display: flex;
@@ -61,9 +74,25 @@ const Button = styled.div`
 
 const Image = styled.img`
   height: 60px;
+`;
+
+const Hamburger = styled.div`
+  background-color: var(--color-second);
+  color: white;
+  display: none;
+
+  @media only screen and (max-width: 425px){
+    display: block;
+  }
 `
 
 const Navbar = ({ authenticated, logout }) => {
+  const [navbarOpen, setNavbarOpen] = useState(false);
+
+  const handleToggle = () => {
+    setNavbarOpen(!navbarOpen)
+  }
+
   let links;
 
   if (authenticated) {
@@ -79,10 +108,12 @@ const Navbar = ({ authenticated, logout }) => {
     <Wrapper>
       <TopNav>
         <a href="/"><Image src={Logo} alt="logo"/></a>
-        <SearchBar />
         {links}
       </TopNav>
-      <BottomNav>
+      <Hamburger>
+        <Button onClick={handleToggle}>Test</Button>
+      </Hamburger>
+      <BottomNav showMenu={navbarOpen ? "showMenu" : ""}>
         <StyledLink to="/main">
           <Main />
           Main Dishes
