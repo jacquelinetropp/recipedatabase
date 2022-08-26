@@ -11,7 +11,7 @@ import { ReactComponent as Dessert } from "../../assets/cake.svg";
 import { ReactComponent as Beverage } from "../../assets/beverage.svg";
 import {signOut} from '../../store/user/userActions';
 import Logo from '../../assets/logo.png';
-
+import Menu from '../../assets/menu.png';
 const Wrapper = styled.div``;
 
 const TopNav = styled.div`
@@ -76,6 +76,13 @@ const Image = styled.img`
   height: 60px;
 `;
 
+const MenuImage = styled.img`
+  color: white;
+  padding: 1rem;
+  margin-bottom: -10px;
+  width: 50px;
+`
+
 const Hamburger = styled.div`
   background-color: var(--color-second);
   color: white;
@@ -111,7 +118,9 @@ const Navbar = ({ authenticated, logout }) => {
         {links}
       </TopNav>
       <Hamburger>
-        <Button onClick={handleToggle}>Test</Button>
+        <Button onClick={handleToggle}>
+          <MenuImage src={Menu} alt="menu icon" />
+        </Button>
       </Hamburger>
       <BottomNav showMenu={navbarOpen ? "showMenu" : ""}>
         <StyledLink to="/main">
