@@ -49,7 +49,7 @@ const IngredientInput = ({ index, userSetting, auth }) => {
       <Field
         type="text"
         name={`ingredients[${index}]`}
-        placeholder="Ingredient name..."
+        placeholder="Ingredient"
         component={Input}
       />
     </Ingredient>

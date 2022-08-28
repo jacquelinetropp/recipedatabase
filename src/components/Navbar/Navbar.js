@@ -16,7 +16,7 @@ const Wrapper = styled.div``;
 
 const TopNav = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   padding: 1rem;
 `;
@@ -42,10 +42,12 @@ const BottomNav = styled.div`
 
   @media only screen and (max-width: 425px){
     display: ${({showMenu}) => showMenu ? "grid" : "none"};
+    opacity: 0%;
     height: 100%;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 2rem;
     padding: 2rem;
+    animation: ${({showMenu}) => showMenu ? "navbar 1s normal forwards" : ""};
   }
 
   `;

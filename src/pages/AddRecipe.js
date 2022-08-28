@@ -3,7 +3,7 @@ import styled from "styled-components";
 import RecipeForm from "../components/RecipeForm/RecipeForm";
 
 const Wrapper = styled.div`
-  width: 75%;
+  width: 85%;
   margin: 2rem auto;
 `;
 

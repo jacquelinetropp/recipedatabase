@@ -27,6 +27,7 @@ function App({ authenticated }) {
         <Route exact path="/dessert" component={CategoryPage} />
         <Route exact path="/beverage" component={CategoryPage} />
         <Route exact path ="/editprofile" component={EditProfile} />
+      
       </Fragment>
     );
   } else {

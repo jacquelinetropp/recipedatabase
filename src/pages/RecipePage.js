@@ -75,8 +75,8 @@ const RecipePage = ({ recipe, getOneRecipe, loading, measurements }) => {
         <Name>{recipe.title}</Name>
         <Main>
           <DescriptionBox>
-            <p>Cooking time: {recipe.cookingTime} minutes</p>
-            <p>Serving Size: {recipe.serving}</p>
+            <p><Header>Cooking Time:</Header>{recipe.cookingTime} minutes</p>
+            <p><Header>Serving Size: </Header>{recipe.serving}</p>
           </DescriptionBox>
           <hr />
           <Header>Description</Header>

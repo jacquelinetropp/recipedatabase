@@ -73,7 +73,7 @@ export const signIn =
       dispatch({ type: actions.AUTH_SUCCESS });
 
       const measurements = getState().firebase.profile.measurements;
-      console.log(measurements);
+ 
       dispatch({type: actions.SET_MEASUREMENTS, payload: measurements})
     } catch (err) {
       dispatch({ type: actions.AUTH_FAIL, payload: err.message });

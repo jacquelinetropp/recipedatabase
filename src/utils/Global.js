@@ -49,8 +49,17 @@ const GlobalStyles = createGlobalStyle`
     font-family: inherit;
   }
   h1, h2, h3, h4, h5, h6 { 
-      font-family: 'Architects Daughter', cursive;
-  
+    font-family: 'Dancing Script', cursive;
+    }
+
+    h4 {
+      font-size: 2.2rem;
+    }
+    h6{
+      font-size: 1.8rem;
+    }
+  P {
+    font-size: 1.4rem;
   }
 `;
 

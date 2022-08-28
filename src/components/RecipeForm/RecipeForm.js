@@ -47,6 +47,10 @@ const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media only screen and (max-width: 425px){
+    flex-direction: column;
+  }
 `;
 
 const Category = styled.div`
@@ -167,7 +171,7 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
               component={Input}
             />
             <Category>
-              <h6>Select a Category</h6>
+              <h4>Select a Category</h4>
               <Field as="select" name="category">
                 <option value="main">Main Dish</option>
                 <option value="soup">Soup</option>
@@ -194,6 +198,7 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
                 Upload
               </Button>
             </ImageDiv>
+            <h4>Ingredients</h4>
             {Array.from(Array(number)).map((c, index) => {
               return <IngredientInput key={c} index={index} />;
             })}
@@ -216,11 +221,11 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
               </Button>
             </ButtonWrapper>
             <TempDiv>
-              <h6>Oven should be set to: </h6>
+              <h4>Oven should be set to: </h4>
               <Field
                 type="number"
                 name="temperature"
-                placeholder="Oven temperature"
+                placeholder="temperature"
                 component={Input}
               />
               {degreeSettings()}

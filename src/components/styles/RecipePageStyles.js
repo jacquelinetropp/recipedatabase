@@ -8,9 +8,6 @@ export const InnerWrapper = styled.div`
   margin: 0 auto;
   margin-top: -5rem;
   z-index: 3;
-  /* position: absolute;
-  left: 50%;
-  transform: translate(-50%); */
 `;
 export const Main = styled.div`
   width: 97%;
@@ -36,6 +33,7 @@ export const Image = styled.div`
     padding-top: 3rem;
     display: block;
     border-radius: 4px;
+    box-shadow: 0 0 2rem rgba(0,0,0,0.3);
   }
 `;
 
@@ -43,10 +41,15 @@ export const DescriptionBox = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     text-align: center;
+
+    @media only screen and (max-width: 426px) {
+      grid-template-columns: repeat(1, 1fr);
+  }
 `
 
 export const Name = styled.div`
   background-color: var(--color-secondLight);
+  font-family: 'Dancing Script', cursive;
   padding: 3rem;
   font-size: 5rem;
   color: white;
@@ -55,12 +58,12 @@ export const Name = styled.div`
 
 export const Header = styled.h6`
   color: var(--color-mainDark);
-  font-size: 1.8rem;
+  font-size: 2rem;
 `;
 
 export const InstructionsList = styled.ol`
   padding-left: 3rem;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 `;
 
 export const IngredientsList = styled.ul`

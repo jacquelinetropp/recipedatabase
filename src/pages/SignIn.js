@@ -1,28 +1,40 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import styled from "styled-components";
+import styled, { ThemeContext } from "styled-components";
 
 import {signIn} from '../store/user/userActions';
 import { MessageWrapper } from "../components/styles";
 import Message from "../components/styles/Message";
 import Button from "../components/Button/Button";
 import Input from "../components/Input/Input";
-// import Heading from "../../components/styles/Headings";
+
 
 const StyledForm = styled(Form)`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-gap: 2rem;
+  grid-gap: 1rem;
   padding-bottom: 2rem;
+  position: relative;
+  margin-top: 1rem;
 `;
 
 const Main = styled.div`
   width: 70%;
-  margin: 15rem auto 0 auto;
+  margin: 10rem auto 0 auto;
   text-align: center;
+`;
+
+const StyledHeader = styled.h1`
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+`;
+
+const StyledLink = styled(Link)`
+  font-size: 1.5rem;
+  color: black;
 `;
 
 const SignInSchema = Yup.object().shape({
@@ -36,12 +48,15 @@ const ButtonWrapper = styled.div`
 grid-column: 1/-1;
 `
 
-const SignIn = ({ loading, error, login, history }) => {
+const SignIn = ({ loading, error, login, history, authenticated }) => {
+  // console.log(authenticated);
   //   useEffect(() => {
   //     return () => {
-  //       cleanUp();
+  //       if (authenticated) {
+  //         history.push("/")
+  //       };
   //     };
-  //   }, [cleanUp]);
+  //   });
   return (
     <Formik
       initialValues={{
@@ -50,13 +65,19 @@ const SignIn = ({ loading, error, login, history }) => {
       }}
       validationSchema={SignInSchema}
       onSubmit={async (values) => {
-        await login(values);
-        history.push("/");
+        try {
+          await login(values);
+          history.push('/');
+        } catch (e) {
+          console.log(e);
+        }
+       
       }}
     >
       {({ isSubmitting, isValid }) => (
         <Main>
-          <h1>Login</h1>
+          <StyledHeader>Login</StyledHeader>
+          <StyledLink to="/signup">Create an account</StyledLink>
           <StyledForm>
             <Field
               type="email"
@@ -71,31 +92,34 @@ const SignIn = ({ loading, error, login, history }) => {
               placeholder="Your Password"
               component={Input}
             />
-        <ButtonWrapper>
-            <Button
-              loading={loading ? "Logging In..." : null}
-              disabled={!isValid || isSubmitting}
-              type="submit"
-            >
-              Login
-            </Button>
-            </ButtonWrapper>
             <MessageWrapper>
               <Message error show={error}>
                 {error}
               </Message>
             </MessageWrapper>
+        <ButtonWrapper>
+            <Button
+              loading={loading ? "Logging In..." : null}
+              disabled={!isValid || isSubmitting}
+              type="submit"
+              nopadding
+            >
+              Login
+            </Button>
+            </ButtonWrapper>
+            
           </StyledForm>
-          <Link to="/signup">Create an account</Link>
+         
         </Main>
       )}
     </Formik>
   );
 };
 
-const mapStateToProps = ({ user }) => ({
+const mapStateToProps = ({ user, firebase }) => ({
   loading: user.loading,
   error: user.error,
+  authenticated: firebase.auth.uid
 });
 
 const mapDispatchToProps = {

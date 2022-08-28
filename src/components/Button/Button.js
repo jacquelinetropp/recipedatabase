@@ -5,7 +5,7 @@ const StyledButton = styled.button`
   width: ${({ contain }) => (contain ? "auto" : "100%")};
   height: ${({ recipe }) => (recipe ? "36px" : "100%")};
   outline: none;
-  padding: 1.2rem 2rem;
+  padding: ${({ nopadding }) => (nopadding ? "0rem" : "1.2rem 2rem")};
   border-radius: 10px;
   font-size: 1.2rem;
   color: ${({ color }) => {
