@@ -1,8 +1,8 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import { connect } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, Redirect } from "react-router-dom";
 import styled, { ThemeContext } from "styled-components";
 
 import {signIn} from '../store/user/userActions';
@@ -48,15 +48,8 @@ const ButtonWrapper = styled.div`
 grid-column: 1/-1;
 `
 
-const SignIn = ({ loading, error, login, history, authenticated }) => {
-  // console.log(authenticated);
-  //   useEffect(() => {
-  //     return () => {
-  //       if (authenticated) {
-  //         history.push("/")
-  //       };
-  //     };
-  //   });
+const SignIn = ({ loading, error, login}) => {
+
   return (
     <Formik
       initialValues={{
@@ -67,11 +60,9 @@ const SignIn = ({ loading, error, login, history, authenticated }) => {
       onSubmit={async (values) => {
         try {
           await login(values);
-          history.push('/');
         } catch (e) {
           console.log(e);
-        }
-       
+        }       
       }}
     >
       {({ isSubmitting, isValid }) => (
@@ -116,10 +107,9 @@ const SignIn = ({ loading, error, login, history, authenticated }) => {
   );
 };
 
-const mapStateToProps = ({ user, firebase }) => ({
+const mapStateToProps = ({ user }) => ({
   loading: user.loading,
   error: user.error,
-  authenticated: firebase.auth.uid
 });
 
 const mapDispatchToProps = {

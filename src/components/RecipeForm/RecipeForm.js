@@ -16,7 +16,6 @@ const RecipeSchema = Yup.object().shape({
   description: Yup.string().required(
     "Please write a description of your recipe"
   ),
-  temperature: Yup.number().required("Please give a temperature").positive(),
   cookingTime: Yup.number().required("Please give a time").positive(),
   serving: Yup.number()
     .required("Please write how many people this serves")
@@ -48,7 +47,7 @@ const ButtonWrapper = styled.div`
   align-items: center;
   justify-content: center;
 
-  @media only screen and (max-width: 425px){
+  @media only screen and (max-width: 425px) {
     flex-direction: column;
   }
 `;
@@ -92,28 +91,52 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
     }
   };
 
-  const handleUpload = async (values) => {
-    const storage = firebase.storage();
-    const uploadTask = storage.ref(`images/${image.name}`).put(image);
-    uploadTask.on(
-      firebase.storage.TaskEvent.STATE_CHANGED,
-      (snapshot) => {},
-      (error) => {
-        console.log(error);
-      },
-      () => {
-        storage
-          .ref("images")
-          .child(image.name)
-          .getDownloadURL()
-          .then((url) => {
-            setImageUrl(url);
-            console.log(url);
-          }).then(() => {
-            createRecipe(values, imageUrl)
-          })
-      }
-    );
+  // const handleUpload = async (values) => {
+  //   const storage = firebase.storage();
+  //   const uploadTask = storage.ref(`images/${image.name}`).put(image);
+  //   uploadTask.on(
+  //     firebase.storage.TaskEvent.STATE_CHANGED,
+  //     (snapshot) => {},
+  //     (error) => {
+  //       console.log(error);
+  //     },
+  //     () => {
+  //       storage
+  //         .ref("images")
+  //         .child(image.name)
+  //         .getDownloadURL()
+  //         .then((url) => {
+  //           setImageUrl(url);
+  //           console.log(url);
+  //         }).then(() => {
+  //           createRecipe(values, imageUrl)
+  //         })
+  //     }
+  //   );
+  // };
+
+  const handleUpload = async () => {
+    return new Promise((resolve, reject) => {
+      const storage = firebase.storage();
+      const uploadTask = storage.ref(`images/${image.name}`).put(image);
+      uploadTask.on(
+        firebase.storage.TaskEvent.STATE_CHANGED,
+        (snapshot) => {},
+        (error) => {
+          reject(error);
+        },
+        () => {
+          storage
+            .ref("images")
+            .child(image.name)
+            .getDownloadURL()
+            .then((url) => {
+              setImageUrl(url);
+              resolve(url);
+            });
+        }
+      );
+    });
   };
 
   return (
@@ -134,7 +157,12 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
       }}
       validationSchema={RecipeSchema}
       onSubmit={async (values) => {
-        await handleUpload(values)
+        try {
+          const url = await handleUpload();
+          createRecipe(values, url);
+        } catch (err) {
+          console.log(err);
+        }
       }}
     >
       {({ isSubmitting, isValid }) => (
