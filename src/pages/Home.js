@@ -36,7 +36,7 @@ const Home = ({ getRecipes, recipes, authenticated, loading }) => {
   if (loading || !recipes) {
     const newCards = [];
     for (let i = 0; i < 10; i++) {
-      newCards.push(<RecipeCardWire />);
+      newCards.push(<RecipeCardWire key={i}/>);
     }
     cards = newCards;
   } else if (recipes.length === 0) {

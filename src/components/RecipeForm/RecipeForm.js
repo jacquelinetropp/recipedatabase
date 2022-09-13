@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
-import styled from "styled-components";
 import { StyledForm } from "../styles";
 import Input from "../Input/Input";
 import IngredientInput from "../Input/IngredientInput";
@@ -9,6 +8,8 @@ import Button from "../Button/Button";
 import { connect } from "react-redux";
 import { createRecipe } from "../../store/recipes/recipeActions";
 import firebase from "../../firebase/firebase";
+import { withRouter } from "react-router-dom";
+import {Wrapper,ImageDiv, Instructions, ButtonWrapper, TempDiv, Category} from './RecipeFormStyles'
 
 const RecipeSchema = Yup.object().shape({
   title: Yup.string().required("The name of the recipe is required"),
@@ -20,52 +21,19 @@ const RecipeSchema = Yup.object().shape({
   serving: Yup.number()
     .required("Please write how many people this serves")
     .positive(),
+  file:  Yup.mixed().required("Please upload an image")
 });
 
-const Wrapper = styled.div``;
-
-const ImageDiv = styled.div`
-  display: flex;
-  align-items: flex-start;
-`;
-
-const TempDiv = styled.div`
-  display: flex;
-  font-size: 2.5rem;
-  margin-top: 1rem;
-  white-space: nowrap;
-  align-items: flex-start;
-`;
-const Instructions = styled.div`
-  width: 100%;
-  text-align: center;
-  font-size: 2.5rem;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  @media only screen and (max-width: 425px) {
-    flex-direction: column;
-  }
-`;
-
-const Category = styled.div`
-  font-size: 2.5rem;
-  display: flex;
-  align-items: center;
-  margin: 1rem 0 2rem 0;
-  gap: 12px;
-`;
-
-const RecipeForm = ({ createRecipe, loading, userSettings }) => {
+const RecipeForm = ({ createRecipe, loading, userSettings, history }) => {
   const [number, setNumber] = useState(1);
   const [step, setStep] = useState(1);
 
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
+
+  const [ingredients, setIngredients] = useState(null);
+  
+  const [message, setMessage] = useState(undefined);
 
   const handleIngredientRemove = () => {
     setNumber(number - 1);
@@ -76,11 +44,12 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
   };
 
   //Image Upload
-  const handleImage = (e) => {
-    if (e.target.files[0]) {
-      setImage(e.target.files[0]);
-    }
-  };
+  // const handleImage = (e) => {
+  //   if (e.target.files[0]) {
+  //     setImage(e.target.files[0]);
+  //     setFieldValue("file", e.currentTarget.files[0])
+  //   }
+  // };
 
   //Degree Settings
   const degreeSettings = () => {
@@ -91,29 +60,6 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
     }
   };
 
-  // const handleUpload = async (values) => {
-  //   const storage = firebase.storage();
-  //   const uploadTask = storage.ref(`images/${image.name}`).put(image);
-  //   uploadTask.on(
-  //     firebase.storage.TaskEvent.STATE_CHANGED,
-  //     (snapshot) => {},
-  //     (error) => {
-  //       console.log(error);
-  //     },
-  //     () => {
-  //       storage
-  //         .ref("images")
-  //         .child(image.name)
-  //         .getDownloadURL()
-  //         .then((url) => {
-  //           setImageUrl(url);
-  //           console.log(url);
-  //         }).then(() => {
-  //           createRecipe(values, imageUrl)
-  //         })
-  //     }
-  //   );
-  // };
 
   const handleUpload = async () => {
     return new Promise((resolve, reject) => {
@@ -154,18 +100,22 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
         description: "",
         serving: "",
         category: "main",
+        image: null
       }}
       validationSchema={RecipeSchema}
       onSubmit={async (values) => {
         try {
           const url = await handleUpload();
           createRecipe(values, url);
+          // history.push('/');
+          console.log(values);
+
         } catch (err) {
           console.log(err);
         }
       }}
     >
-      {({ isSubmitting, isValid }) => (
+      {({ isSubmitting, isValid, setFieldValue }) => (
         <Wrapper>
           <StyledForm>
             <Field
@@ -209,22 +159,20 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
                 <option value="beverage">Beverage</option>
               </Field>
             </Category>
+            <h4>Recipe Image</h4>
             <ImageDiv>
               <Field
                 type="file"
                 name="image"
                 placeholder="Recipe Image"
                 component={Input}
-                onChange={handleImage}
+                onChange={(e) => {
+                  if (e.target.files[0]) {
+                    setImage(e.target.files[0]);
+                    setFieldValue("file", e.target.files[0])
+                  }
+                }}
               />
-              <Button
-                recipe
-                contain
-                type="button"
-                onClick={() => handleUpload()}
-              >
-                Upload
-              </Button>
             </ImageDiv>
             <h4>Ingredients</h4>
             {Array.from(Array(number)).map((c, index) => {
@@ -268,6 +216,7 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
                     name={`instructions[${index}]`}
                     placeholder={`Instructions step ${stepNumber}`}
                     component={Input}
+                    onChange={e => setIngredients(e.target.value)}
                   />
                 );
               })}
@@ -298,6 +247,7 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
             >
               Create Recipe
             </Button>
+            
           </StyledForm>
         </Wrapper>
       )}
@@ -314,4 +264,4 @@ const mapDispatchToProps = {
   createRecipe,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RecipeForm);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RecipeForm));

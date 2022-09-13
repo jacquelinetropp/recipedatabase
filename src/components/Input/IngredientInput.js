@@ -1,5 +1,5 @@
 import { Field } from "formik";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 import Button from "../Button/Button";
 import { connect } from "react-redux";
@@ -11,6 +11,9 @@ const Ingredient = styled.div`
 `;
 
 const IngredientInput = ({ index, userSetting, auth }) => {
+  const [number, setNumber] = useState("");
+  const [value, setvalue] = useState("");
+
 
   let content;
   if (!userSetting) {
@@ -22,6 +25,7 @@ const IngredientInput = ({ index, userSetting, auth }) => {
         <option value="tbsp">tbsp</option>
         <option value="tsp">tsp</option>
         <option value="serving">serving</option>
+        <option value="oz">oz</option>
       </Fragment>
     );
   } else if (userSetting === "metric") {
@@ -41,6 +45,7 @@ const IngredientInput = ({ index, userSetting, auth }) => {
         name={`amount[${index}]`}
         placeholder="Amount"
         component={Input}
+        onChange={e => setvalue(e.target.value)}
       />
       <Field as="select" name={`size[${index}]`}>
         <option value="select">Select</option>
@@ -51,6 +56,7 @@ const IngredientInput = ({ index, userSetting, auth }) => {
         name={`ingredients[${index}]`}
         placeholder="Ingredient"
         component={Input}
+        onChange={e => setNumber(e.target.value)}
       />
     </Ingredient>
   );

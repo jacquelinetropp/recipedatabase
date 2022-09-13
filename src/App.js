@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import Navbar from "./components/Navbar/Navbar";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
-import AddRecipe from "./pages/AddRecipe";
+import AddRecipe from './pages/AddRecipe';
 import RecipePage from "./pages/RecipePage";
 import CategoryPage from "./pages/CategoryPage";
 import EditProfile from "./pages/EditProfile";
