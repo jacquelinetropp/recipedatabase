@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import { connect } from "react-redux";
-import { Link, withRouter, Redirect } from "react-router-dom";
-import styled, { ThemeContext } from "styled-components";
+import { Link, withRouter } from "react-router-dom";
+import styled from "styled-components";
 
 import {signIn} from '../store/user/userActions';
 import { MessageWrapper } from "../components/styles";

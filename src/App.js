@@ -62,6 +62,5 @@ const mapStateToProps = ({ firebase }) => ({
   authenticated: firebase.auth.uid
 });
 
-const mapDispatchToProps = {};
 
 export default connect(mapStateToProps)(App);

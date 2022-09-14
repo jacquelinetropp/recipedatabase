@@ -37,7 +37,6 @@ export const getRecipes =
   () =>
   async (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
-    const userId = getState().firebase.auth.uid;
 
     dispatch({ type: actions.GET_RECIPE_START });
     try {
@@ -72,7 +71,6 @@ export const getRecipes =
   (category) =>
   async (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
-    const userId = getState().firebase.auth.uid;
 
     dispatch({ type: actions.ONE_CATEGORY_START });
     try {

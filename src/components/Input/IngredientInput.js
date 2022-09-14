@@ -1,7 +1,6 @@
 import { Field } from "formik";
 import React, { Fragment, useState } from "react";
 import styled from "styled-components";
-import Button from "../Button/Button";
 import { connect } from "react-redux";
 import Input from "./Input";
 
@@ -66,7 +65,5 @@ const mapStateToProps = ({ firebase }) => ({
   userSetting: firebase.profile.measurements,
   user: firebase.auth.isEmpty,
 });
-
-const mapDispatchToProps = {};
 
 export default connect(mapStateToProps)(IngredientInput);

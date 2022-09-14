@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Formik, Field, Form } from "formik";
+import { Formik, Field } from "formik";
 import * as Yup from "yup";
 import { StyledForm } from "../styles";
 import Input from "../Input/Input";
@@ -32,8 +32,6 @@ const RecipeForm = ({ createRecipe, loading, userSettings, history }) => {
   const [imageUrl, setImageUrl] = useState(null);
 
   const [ingredients, setIngredients] = useState(null);
-  
-  const [message, setMessage] = useState(undefined);
 
   const handleIngredientRemove = () => {
     setNumber(number - 1);
