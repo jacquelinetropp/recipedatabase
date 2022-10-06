@@ -31,7 +31,7 @@ const RecipePage = ({ recipe, getOneRecipe, loading, measurements }) => {
   const ingredientsList = () => {
     for (let i = 0; i < recipe.ingredients.length; i++) {
       list.push(
-        `${recipe.amount[i]} ${recipe.size[i]} ${recipe.ingredients[i]}`
+        `${recipe.ingredients[i].amount} ${recipe.size[i]} ${recipe.ingredients[i].ingredient}`
       );
     }
   };

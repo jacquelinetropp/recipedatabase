@@ -12,11 +12,10 @@ export const createRecipe =
       const newRecipe = {
         title: data.title,
         author: data.author,
-        ingredients: [...data.ingredients],
-        amount: [...data.amount],
+        ingredients: [...data.ingredientsList],
         size: [...data.size],
         userId: userId,
-        instructions: [...data.instructions],
+        instructions: [...data.step],
         temperature: data.temperature,
         degrees: data.degrees,
         image: imageUrl,
@@ -83,11 +82,10 @@ export const getRecipes =
             id: doc.id,
             title: doc.data().title,
             author: doc.data().author,
-            amount: doc.data().amount,
             size: doc.data().size,
-            ingredients: doc.data().ingredients,
+            ingredients: doc.data().ingredientsList,
             userId: doc.data().userId,
-            instructions: doc.data().instructions,
+            instructions: doc.data().step,
             temperature: doc.data().temperature,
             degrees: doc.data().degrees,
             image: doc.data().image,
@@ -111,6 +109,7 @@ export const getOneRecipe =
     try {
       const snapshot = await firestore.collection("recipes").doc(id).get();
       const recipe = await snapshot.data();
+      console.log(recipe)
       recipe.id = id;
       dispatch({ type: actions.ONE_RECIPE_SUCCESS, payload: recipe });
     } catch (e) {

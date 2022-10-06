@@ -9,7 +9,15 @@ import { connect } from "react-redux";
 import { createRecipe } from "../../store/recipes/recipeActions";
 import firebase from "../../firebase/firebase";
 import { withRouter } from "react-router-dom";
-import {Wrapper,ImageDiv, Instructions, ButtonWrapper, TempDiv, Category} from './RecipeFormStyles'
+import {
+  Wrapper,
+  ImageDiv,
+  Instructions,
+  ButtonWrapper,
+  TempDiv,
+  Category,
+  Headers,
+} from "./RecipeFormStyles";
 
 const RecipeSchema = Yup.object().shape({
   title: Yup.string().required("The name of the recipe is required"),
@@ -21,7 +29,7 @@ const RecipeSchema = Yup.object().shape({
   serving: Yup.number()
     .required("Please write how many people this serves")
     .positive(),
-  file:  Yup.mixed().required("Please upload an image")
+  file: Yup.mixed().required("Please upload an image"),
 });
 
 const RecipeForm = ({ createRecipe, loading, userSettings, history }) => {
@@ -31,7 +39,8 @@ const RecipeForm = ({ createRecipe, loading, userSettings, history }) => {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
-  const [ingredients, setIngredients] = useState(null);
+  let ingredientList = [];
+  console.log(ingredientList);
 
   const handleIngredientRemove = () => {
     setNumber(number - 1);
@@ -41,14 +50,6 @@ const RecipeForm = ({ createRecipe, loading, userSettings, history }) => {
     setStep(step - 1);
   };
 
-  //Image Upload
-  // const handleImage = (e) => {
-  //   if (e.target.files[0]) {
-  //     setImage(e.target.files[0]);
-  //     setFieldValue("file", e.currentTarget.files[0])
-  //   }
-  // };
-
   //Degree Settings
   const degreeSettings = () => {
     if (userSettings === "us") {
@@ -57,7 +58,6 @@ const RecipeForm = ({ createRecipe, loading, userSettings, history }) => {
       return <p>C</p>;
     }
   };
-
 
   const handleUpload = async () => {
     return new Promise((resolve, reject) => {
@@ -88,58 +88,60 @@ const RecipeForm = ({ createRecipe, loading, userSettings, history }) => {
       initialValues={{
         title: "",
         author: "",
-        ingredients: [],
-        amount: [],
+        ingredientsList: [{ amount: "", ingredient: "" }],
         size: [],
         temperature: "",
         degrees: "f",
-        instructions: [],
+        step: [{ instruction: "" }],
         cookingTime: "",
         description: "",
         serving: "",
         category: "main",
-        image: null
       }}
-      validationSchema={RecipeSchema}
+      // validationSchema={RecipeSchema}
       onSubmit={async (values) => {
         try {
           const url = await handleUpload();
           createRecipe(values, url);
           // history.push('/');
-          console.log(values);
-
+          // console.log(values);
         } catch (err) {
           console.log(err);
         }
       }}
     >
-      {({ isSubmitting, isValid, setFieldValue }) => (
+      {({ isSubmitting, isValid, setFieldValue, values, handleChange }) => (
         <Wrapper>
           <StyledForm>
+            <h4>Name of Dish</h4>
             <Field
               type="text"
               name="title"
               placeholder="Recipe Title"
               component={Input}
             />
+            <h4>Author of Dish</h4>
             <Field
               type="text"
               name="author"
               placeholder="Your Name"
               component={Input}
             />
+            <h4>Description of Dish</h4>
             <Field
               type="text"
               name="description"
               placeholder="Description of recipe"
               component={Input}
             />
+            <h4>Cook Time</h4>
             <Field
               type="number"
               name="cookingTime"
               placeholder="How many minutes does this take to cook?"
               component={Input}
             />{" "}
+            <h4>Quantity Made</h4>
             <Field
               type="number"
               name="serving"
@@ -167,14 +169,14 @@ const RecipeForm = ({ createRecipe, loading, userSettings, history }) => {
                 onChange={(e) => {
                   if (e.target.files[0]) {
                     setImage(e.target.files[0]);
-                    setFieldValue("file", e.target.files[0])
+                    setFieldValue("file", e.target.files[0]);
                   }
                 }}
               />
             </ImageDiv>
             <h4>Ingredients</h4>
             {Array.from(Array(number)).map((c, index) => {
-              return <IngredientInput key={c} index={index} />;
+              return <IngredientInput key={c} index={index} values={values} />;
             })}
             <ButtonWrapper>
               <Button
@@ -189,7 +191,13 @@ const RecipeForm = ({ createRecipe, loading, userSettings, history }) => {
                 color="green"
                 contain
                 type="button"
-                onClick={() => setNumber(number + 1)}
+                onClick={() => {
+                  values.ingredientsList.push({
+                    amount: "",
+                    ingredient: "",
+                  });
+                  setNumber(number + 1);
+                }}
               >
                 Add Ingredient
               </Button>
@@ -211,10 +219,11 @@ const RecipeForm = ({ createRecipe, loading, userSettings, history }) => {
                 return (
                   <Field
                     type="text"
-                    name={`instructions[${index}]`}
+                    name={`step[${index}].instruction`}
                     placeholder={`Instructions step ${stepNumber}`}
                     component={Input}
-                    onChange={e => setIngredients(e.target.value)}
+                    value={values.step[index].instruction}
+                    onChange={handleChange}
                   />
                 );
               })}
@@ -231,7 +240,12 @@ const RecipeForm = ({ createRecipe, loading, userSettings, history }) => {
                   color="green"
                   contain
                   type="button"
-                  onClick={() => setStep(step + 1)}
+                  onClick={() => {
+                    values.step.push({
+                      instruction: "",
+                    });
+                    setStep(step + 1);
+                  }}
                 >
                   Add Step
                 </Button>
@@ -245,7 +259,6 @@ const RecipeForm = ({ createRecipe, loading, userSettings, history }) => {
             >
               Create Recipe
             </Button>
-            
           </StyledForm>
         </Wrapper>
       )}
@@ -262,4 +275,6 @@ const mapDispatchToProps = {
   createRecipe,
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RecipeForm));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(RecipeForm)
+);

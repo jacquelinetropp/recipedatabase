@@ -9,10 +9,15 @@ const Ingredient = styled.div`
   margin: 1rem;
 `;
 
-const IngredientInput = ({ index, userSetting, auth }) => {
+const IngredientInput = ({
+  index,
+  userSetting,
+  auth,
+  values,
+  handleChange,
+}) => {
   const [number, setNumber] = useState("");
   const [value, setvalue] = useState("");
-
 
   let content;
   if (!userSetting) {
@@ -41,21 +46,24 @@ const IngredientInput = ({ index, userSetting, auth }) => {
     <Ingredient>
       <Field
         type="number"
-        name={`amount[${index}]`}
-        placeholder="Amount"
+        step=".01"
+        name={`ingredientsList[${index}].amount`}
+        placeholder={`Amount`}
         component={Input}
-        onChange={e => setvalue(e.target.value)}
+        value={values.ingredientsList[index].amount}
+        handleChange={handleChange}
       />
-      <Field as="select" name={`size[${index}]`}>
+      <Field as="select" name={`size[${index}]`} value={values.size[index]}>
         <option value="select">Select</option>
         {content}
       </Field>
       <Field
         type="text"
-        name={`ingredients[${index}]`}
+        name={`ingredientsList[${index}].ingredient`}
         placeholder="Ingredient"
         component={Input}
-        onChange={e => setNumber(e.target.value)}
+        value={values.ingredientsList[index].ingredient}
+        handleChange={handleChange}
       />
     </Ingredient>
   );

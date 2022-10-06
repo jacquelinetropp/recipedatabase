@@ -37,3 +37,7 @@ export const Category = styled.div`
   margin: 1rem 0 2rem 0;
   gap: 12px;
 `;
+
+export const Headers = styled.div`
+    display: flex;
+`
