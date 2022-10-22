@@ -18,6 +18,7 @@ const CategoryPage = ({
 }) => {
   const category = window.location.pathname.slice(1).toString();
   useEffect(() => {
+    console.log(category);
     getRecipeCategory(category);
   }, []);
 
@@ -37,8 +38,9 @@ const CategoryPage = ({
       </LinkButton>
     );
   }
+  // console.log(recipes);
 
-  if (!recipes || loading) {
+  if (loading || !recipes) {
     display = <div>Loading...</div>;
   } else if (recipes.length === 0) {
     display = (
@@ -47,6 +49,7 @@ const CategoryPage = ({
       </NoRecipeText>
     );
   } else {
+    console.log(recipes)
     display = recipes.map((recipe) => {
       return <RecipeCard key={recipe.id} recipe={recipe} />;
     });

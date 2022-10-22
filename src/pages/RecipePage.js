@@ -26,10 +26,10 @@ const RecipePage = ({ recipe, getOneRecipe, loading, measurements }) => {
   }, []);
 
   let ingredientsContent;
-  let instructionsContent;
+  let instructionsContent = [];
   let list = [];
   const ingredientsList = () => {
-    for (let i = 0; i < recipe.ingredients.length; i++) {
+    for (let i = 0; i < recipe.size.length; i++) {
       list.push(
         `${recipe.ingredients[i].amount} ${recipe.size[i]} ${recipe.ingredients[i].ingredient}`
       );
@@ -47,8 +47,11 @@ const RecipePage = ({ recipe, getOneRecipe, loading, measurements }) => {
         })}
       </Fragment>
     );
-    instructionsContent = recipe.instructions.map((instruction, index) => {
-      return <li key={index}>{instruction}</li>;
+    recipe.instructions.map((x) => {
+      instructionsContent.push(Object.values(x).toString());
+    });
+    instructionsContent.map((item) => {
+      return <li>{item}</li>;
     });
   }
 
@@ -62,12 +65,11 @@ const RecipePage = ({ recipe, getOneRecipe, loading, measurements }) => {
   }, [recipe.image]);
   const handleError = () => setImgSrc(Food);
 
-  return (
-    !loading || !recipe ? (
+  return !loading || !recipe ? (
     <Wrapper>
       <ImageWrapper>
         <Image>
-          <img src={imgSrc} onError={handleError} alt="recipe"/>
+          <img src={imgSrc} onError={handleError} alt="recipe" />
         </Image>
       </ImageWrapper>
 
@@ -75,8 +77,14 @@ const RecipePage = ({ recipe, getOneRecipe, loading, measurements }) => {
         <Name>{recipe.title}</Name>
         <Main>
           <DescriptionBox>
-            <p><Header>Cooking Time:</Header>{recipe.cookingTime} minutes</p>
-            <p><Header>Serving Size: </Header>{recipe.serving}</p>
+            <p>
+              <Header>Cooking Time:</Header>
+              {recipe.cookingTime} minutes
+            </p>
+            <p>
+              <Header>Serving Size: </Header>
+              {recipe.serving}
+            </p>
           </DescriptionBox>
           <hr />
           <Header>Description</Header>
@@ -88,17 +96,19 @@ const RecipePage = ({ recipe, getOneRecipe, loading, measurements }) => {
           <Header>Instructions</Header>
 
           <InstructionsList>
-            <li>
-              Preheat oven to {temperature()}
-              {instructionsContent}
-            </li>
+          {recipe.temperature ? (
+            <li>Preheat oven to {temperature()}</li>
+          ): ""}
+            {instructionsContent.map((item) => {
+              return <li>{item}</li>;
+            })}
           </InstructionsList>
         </Main>
       </InnerWrapper>
     </Wrapper>
   ) : (
     <RecipePageWire />
-  ))
+  );
 };
 
 const mapStateToProps = ({ recipe, firebase }) => ({

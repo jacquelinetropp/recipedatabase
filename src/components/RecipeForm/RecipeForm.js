@@ -40,7 +40,6 @@ const RecipeForm = ({ createRecipe, loading, userSettings, history }) => {
   const [imageUrl, setImageUrl] = useState(null);
 
   let ingredientList = [];
-  console.log(ingredientList);
 
   const handleIngredientRemove = () => {
     setNumber(number - 1);
@@ -98,13 +97,12 @@ const RecipeForm = ({ createRecipe, loading, userSettings, history }) => {
         serving: "",
         category: "main",
       }}
-      // validationSchema={RecipeSchema}
+      validationSchema={RecipeSchema}
       onSubmit={async (values) => {
         try {
           const url = await handleUpload();
           createRecipe(values, url);
-          // history.push('/');
-          // console.log(values);
+          history.push('/');
         } catch (err) {
           console.log(err);
         }

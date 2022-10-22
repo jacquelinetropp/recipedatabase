@@ -104,13 +104,12 @@ export const getOneRecipe =
   (id) =>
   async (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
-
     dispatch({ type: actions.ONE_RECIPE_START });
     try {
       const snapshot = await firestore.collection("recipes").doc(id).get();
       const recipe = await snapshot.data();
-      console.log(recipe)
-      recipe.id = id;
+      // console.log(recipe); 
+      // recipe.id = id;
       dispatch({ type: actions.ONE_RECIPE_SUCCESS, payload: recipe });
     } catch (e) {
       dispatch({ type: actions.ONE_RECIPE_FAIL, payload: e });
