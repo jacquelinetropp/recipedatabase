@@ -15,7 +15,7 @@ export const RecipeWrapper = styled.div`
   margin: 2rem;
   display: grid;
   grid-gap: 2rem;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 `;
 
 export const NoRecipeText = styled.h4`

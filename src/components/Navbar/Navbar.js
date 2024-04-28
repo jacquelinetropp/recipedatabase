@@ -95,6 +95,11 @@ const Hamburger = styled.div`
   }
 `
 
+const AuthLinks = styled.div`
+  display: flex;
+  gap: 10px;
+`
+
 const Navbar = ({ authenticated, logout }) => {
   const [navbarOpen, setNavbarOpen] = useState(false);
 
@@ -108,9 +113,10 @@ const Navbar = ({ authenticated, logout }) => {
     links = <Button onClick={() => logout()}>Logout</Button>;
   } else {
     links = (
-      <Fragment>
+      <AuthLinks>
         <HeaderLink to="/signin">Sign In</HeaderLink>
-      </Fragment>
+        <HeaderLink to="/signup">Sign Up</HeaderLink>
+      </AuthLinks>
     );
   }
   return (

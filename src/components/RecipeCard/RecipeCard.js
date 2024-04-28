@@ -22,7 +22,7 @@ const Name = styled.div`
   padding: 1rem 2rem;
   width: 100%;
   color: black;
-  font-family: 'Dancing Script', cursive;
+  font-family: 'Salsa', cursive;
   letter-spacing: 2px;
   font-weight: 700;
   text-transform: uppercase;
